@@ -54,12 +54,10 @@ ExportedObj/
 
 # Unity3D generated meta folders
 Assets/*.meta
-Assets/Animations/*.meta
-Assets/Animations/*/*.meta
-Assets/Characters/*.meta
-Assets/Characters/*/*.meta
-Assets/Prefabs/*.meta
-Assets/Prefabs/Characters/*.meta
+Assets/Controllers/**/*.meta
+Assets/Animations/**/*.meta
+Assets/Characters/**/*.meta
+Assets/Prefabs/Characters/**/*.meta
 
 # Unity3D generated file on crash reports
 sysinfo.txt

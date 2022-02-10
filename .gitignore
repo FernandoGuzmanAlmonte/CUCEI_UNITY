@@ -53,8 +53,9 @@ ExportedObj/
 *.cs.meta
 
 # Unity3D generated meta folders
-*/*.meta
-*/*/*.meta
+Assets/*.meta
+Assets/Prefabs/*.meta
+Assets/Prefabs/Characters/*.meta
 
 # Unity3D generated file on crash reports
 sysinfo.txt

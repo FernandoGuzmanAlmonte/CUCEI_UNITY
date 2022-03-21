@@ -70,7 +70,7 @@ public partial class @ThirdPersonActionAssets : IInputActionCollection2, IDispos
                 {
                     ""name"": ""up"",
                     ""id"": ""ae11017b-854b-43ad-8984-853ddcd4e40c"",
-                    ""path"": ""<Keyboard>/upArrow"",
+                    ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -81,7 +81,7 @@ public partial class @ThirdPersonActionAssets : IInputActionCollection2, IDispos
                 {
                     ""name"": ""down"",
                     ""id"": ""5a53aee9-ad22-4701-8af2-3ecbb2e25fca"",
-                    ""path"": ""<Keyboard>/downArrow"",
+                    ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -92,7 +92,7 @@ public partial class @ThirdPersonActionAssets : IInputActionCollection2, IDispos
                 {
                     ""name"": ""left"",
                     ""id"": ""82abfa45-4042-430a-b5ca-c535170975ac"",
-                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -103,7 +103,7 @@ public partial class @ThirdPersonActionAssets : IInputActionCollection2, IDispos
                 {
                     ""name"": ""right"",
                     ""id"": ""ee356e08-9810-4b9c-a5b9-f380f86a8b3a"",
-                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

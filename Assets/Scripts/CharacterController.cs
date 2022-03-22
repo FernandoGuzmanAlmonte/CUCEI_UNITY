@@ -1,92 +1,103 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
-using Debug = UnityEngine.Debug;
+using UnityEngine.InputSystem;
 
 public class CharacterController : MonoBehaviour
 {
-    [SerializeField] private float moveSpeed = 2f;
-    [SerializeField] private float turnSpeed = 100f;
 
+    // Input Fields
+    private ThirdPersonActionAssets playerActionsAsset;
+    private InputAction move;
+    
+    // Movement Fields
+    private Rigidbody rigidbody;
+    [SerializeField] private float movementForce = 1f;
+    // [SerializeField] private float jumpForce = 5f;
+    [SerializeField] private float maxSpeed = 5f;
+    private Vector3 forceDirection = Vector3.zero;
+    
+    // Camera
+    [SerializeField] private Camera playerCamera;
+    
+    // Animator
     private Animator animator;
 
-    private static readonly int Speed = Animator.StringToHash("Speed");
-    private static readonly int IsWalking = Animator.StringToHash("IsWalking");
-
-    // Start is called before the first frame update
-    private void Start()
+    // Awake
+    private void Awake()
     {
-        animator = GetComponent<Animator>();
-    }
-
-    // Update is called once per frame
-    private void Update()
-    {
-        // Axis Variables
-        float xAxis = Input.GetAxis("Horizontal");
-        float zAxis = Input.GetAxis("Vertical");
-
-        //
-        Vector3 velocity = CalculateVelocity(zAxis);
-        Vector3 rotation = CalculateRotation(xAxis);
-        
-        UpdateAnimator(xAxis, zAxis);
-        MoveCharacter(velocity);
+        rigidbody = this.GetComponent<Rigidbody>();
+        playerActionsAsset = new ThirdPersonActionAssets();
+        animator = this.GetComponent<Animator>();
     }
 
     //
-    private Vector3 CalculateVelocity(float zAxis)
+    private void OnEnable()
     {
-        Vector3 velocity = new Vector3(0.0f, 0.0f, (zAxis * moveSpeed));
-        return velocity;
+        move = playerActionsAsset.Player.Move;
+        playerActionsAsset.Player.Enable();
     }
     
     //
-    private Vector3 CalculateRotation(float xAxis)
+    private void OnDisable()
     {
-        Vector3 rotation = new Vector3(0.0f, 0.0f, (xAxis * turnSpeed));
-        return rotation;
+        playerActionsAsset.Player.Disable();
     }
     
     //
-    private void MoveCharacter(Vector3 velocity)
+    private void FixedUpdate()
     {
-        transform.Translate(velocity * Time.deltaTime);
+        forceDirection += GetCameraRight(playerCamera) * (move.ReadValue<Vector2>().x * movementForce);
+        forceDirection += GetCameraForward(playerCamera) * (move.ReadValue<Vector2>().y * movementForce);
+        
+        rigidbody.AddForce(forceDirection, ForceMode.Impulse);
+        forceDirection = Vector3.zero;
+
+        if (rigidbody.velocity.y < 0f)
+        {
+            rigidbody.velocity -= Vector3.down * Physics.gravity.y * Time.fixedDeltaTime;
+        }
+
+        Vector3 horizontalVelocity = rigidbody.velocity;
+        horizontalVelocity.y = 0;
+        if (horizontalVelocity.sqrMagnitude > (maxSpeed * maxSpeed))
+        {
+            rigidbody.velocity = horizontalVelocity.normalized * maxSpeed + Vector3.up * rigidbody.velocity.y;
+        }
+        
+        LookAt();
     }
 
     //
-    private void UpdateAnimator(float xAxis, float zAxis)
+    private void LookAt()
     {
-        // Arrow Variables
-        bool downArrow = Input.GetKey(KeyCode.DownArrow);
-        bool upArrow = Input.GetKey(KeyCode.UpArrow);
-        bool rightArrow = Input.GetKey(KeyCode.RightArrow);
-        bool leftArrow = Input.GetKey(KeyCode.LeftArrow);
-        
-        //
-        if (upArrow && zAxis > 0)
+        Vector3 direction = rigidbody.velocity;
+        direction.y = 0f;
+
+        if (move.ReadValue<Vector2>().sqrMagnitude > 0.1f && direction.sqrMagnitude > 0.1f)
         {
-            animator.SetBool(IsWalking, true);
-            animator.SetFloat(Speed, 1.0f);
-        }
-        else if (downArrow && zAxis < 0)
-        {
-            animator.SetBool(IsWalking, true);
-            animator.SetFloat(Speed, -1.0f);
-        }
-        else if (rightArrow && xAxis > 0)
-        {
-            
-        }
-        else if (leftArrow && xAxis < 0)
-        {
-            
+            this.rigidbody.rotation = Quaternion.LookRotation(direction, Vector3.up);
         }
         else
         {
-            animator.SetBool(IsWalking, false);
+            rigidbody.angularVelocity = Vector3.zero;
         }
+    }
+
+    //
+    private static Vector3 GetCameraForward(Camera playerCamera)
+    {
+        Vector3 forward = playerCamera.transform.forward;
+        forward.y = 0;
+        return forward.normalized;
+    }
+    
+    //
+    private static Vector3 GetCameraRight(Camera playerCamera)
+    {
+        Vector3 right = playerCamera.transform.right;
+        right.y = 0;
+        return right.normalized;
     }
 }

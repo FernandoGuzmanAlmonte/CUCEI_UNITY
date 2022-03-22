@@ -18,10 +18,11 @@ public class CharacterAnimation : MonoBehaviour
     {
         animator = this.GetComponent<Animator>();
         rigidBody = this.GetComponent<Rigidbody>();
+
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         animator.SetFloat(Speed, rigidBody.velocity.magnitude / maxSpeed);
     }

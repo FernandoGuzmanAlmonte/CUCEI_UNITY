@@ -60,6 +60,9 @@ Assets/Characters/**/*.meta
 Assets/Prefabs/**/*.meta
 Assets/Prefabs/Characters/**/*.meta
 
+# Unity3D generated animation files
+Assets/Animations/**/*.anim
+
 # Unity3D generated file on crash reports
 sysinfo.txt
 

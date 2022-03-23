@@ -93,7 +93,7 @@ public class CharacterController : MonoBehaviour
         return forward.normalized;
     }
     
-    //
+    //a
     private static Vector3 GetCameraRight(Camera playerCamera)
     {
         Vector3 right = playerCamera.transform.right;
